@@ -3,60 +3,58 @@
     "description": "BIBot - a SQL query bot for the TICKIT database",
     "intents": [
         {
-            "intentVersion": "$LATEST",
+            "intentVersion": "$LATEST", 
             "intentName": "Hello_Intent"
-        },
+        }, 
         {
-            "intentVersion": "$LATEST",
+            "intentVersion": "$LATEST", 
             "intentName": "Top_Intent"
-        },
+        }, 
         {
-            "intentVersion": "$LATEST",
+            "intentVersion": "$LATEST", 
             "intentName": "Compare_Intent"
-        },
+        }, 
         {
-            "intentVersion": "$LATEST",
+            "intentVersion": "$LATEST", 
             "intentName": "Count_Intent"
-        },
+        }, 
         {
-            "intentVersion": "$LATEST",
+            "intentVersion": "$LATEST", 
             "intentName": "Switch_Intent"
-        },
+        }, 
         {
-            "intentVersion": "$LATEST",
+            "intentVersion": "$LATEST", 
             "intentName": "Reset_Intent"
-        },
+        }, 
         {
-            "intentVersion": "$LATEST",
+            "intentVersion": "$LATEST", 
             "intentName": "Refresh_Intent"
-        },
+        }, 
         {
-            "intentVersion": "$LATEST",
+            "intentVersion": "$LATEST", 
             "intentName": "Goodbye_Intent"
         }
     ],
-    "enableModelImprovements": true,
-    "nluIntentConfidenceThreshold": 0.75,
     "clarificationPrompt": {
         "messages": [
             {
                 "contentType": "PlainText",
                 "content": "Can you please rephrase that for me?",
-                "groupNumber": 0
+                "groupNumber": 1
             }
         ],
         "maxAttempts": 5,
-        "responseCard": ""
+        "responseCard": "1"
     },
     "abortStatement": {
         "messages": [
             {
                 "contentType": "PlainText",
                 "content": "Sorry, I could not understand. Goodbye.",
-                "groupNumber": 0
+                "groupNumber": 1
             }
         ],
-        "responseCard": ""
+        "responseCard": "1"
     },
     "idleSessionTTLInSeconds": 300,
     "voiceId": "Darshan",
@@ -64,12 +62,5 @@
     "processBehavior": "SAVE",
     "locale": "de-DE",
     "childDirected": true,
-    "detectSentiment": true,
-    "createVersion": true,
-    "tags": [
-        {
-            "key": "",
-            "value": ""
-        }
-    ]
+    "createVersion": true
 }
