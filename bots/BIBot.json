@@ -1,63 +1,75 @@
 {
-  "name": "BIBot",
-  "description": "BIBot - a SQL query bot for the TICKIT database",
-  "intents": [
+    "name": "BIBot",
+    "description": "BIBot - a SQL query bot for the TICKIT database",
+    "intents": [
         {
-            "intentVersion": "$LATEST", 
+            "intentVersion": "$LATEST",
             "intentName": "Hello_Intent"
-        }, 
+        },
         {
-            "intentVersion": "$LATEST", 
+            "intentVersion": "$LATEST",
             "intentName": "Top_Intent"
-        }, 
+        },
         {
-            "intentVersion": "$LATEST", 
+            "intentVersion": "$LATEST",
             "intentName": "Compare_Intent"
-        }, 
+        },
         {
-            "intentVersion": "$LATEST", 
-	    "intentName": "Count_Intent"
-        }, 
+            "intentVersion": "$LATEST",
+            "intentName": "Count_Intent"
+        },
         {
-            "intentVersion": "$LATEST", 
+            "intentVersion": "$LATEST",
             "intentName": "Switch_Intent"
-        }, 
+        },
         {
-            "intentVersion": "$LATEST", 
+            "intentVersion": "$LATEST",
             "intentName": "Reset_Intent"
-        }, 
+        },
         {
-            "intentVersion": "$LATEST", 
+            "intentVersion": "$LATEST",
             "intentName": "Refresh_Intent"
-        }, 
+        },
         {
-            "intentVersion": "$LATEST", 
+            "intentVersion": "$LATEST",
             "intentName": "Goodbye_Intent"
         }
-  ], 
-  "locale": "en-US",
-  "abortStatement": {
-    "messages": [
-      {
-        "content": "Sorry, I could not understand. Goodbye.",
-        "contentType": "PlainText"
-      }
+    ],
+    "enableModelImprovements": true,
+    "nluIntentConfidenceThreshold": 0.75,
+    "clarificationPrompt": {
+        "messages": [
+            {
+                "contentType": "PlainText",
+                "content": "Can you please rephrase that for me?",
+                "groupNumber": 0
+            }
+        ],
+        "maxAttempts": 5,
+        "responseCard": ""
+    },
+    "abortStatement": {
+        "messages": [
+            {
+                "contentType": "PlainText",
+                "content": "Sorry, I could not understand. Goodbye.",
+                "groupNumber": 0
+            }
+        ],
+        "responseCard": ""
+    },
+    "idleSessionTTLInSeconds": 300,
+    "voiceId": "Darshan",
+    "checksum": "",
+    "processBehavior": "SAVE",
+    "locale": "de-DE",
+    "childDirected": true,
+    "detectSentiment": true,
+    "createVersion": true,
+    "tags": [
+        {
+            "key": "",
+            "value": ""
+        }
     ]
-  },
-  "childDirected": false,
-  "clarificationPrompt": {
-    "maxAttempts": 5,
-    "messages": [
-      {
-        "content": "Come again?",
-        "contentType": "PlainText"
-      },
-      {
-        "content": "Sorry, can you please repeat that?",
-        "contentType": "PlainText"
-      }
-    ]
-  },
-  "idleSessionTTLInSeconds": 300,
-  "voiceId": "Matthew"
 }
