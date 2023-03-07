@@ -58,7 +58,7 @@
     },
     "idleSessionTTLInSeconds": 300,
     "voiceId": "Darshan",
-    "checksum": "",
+    "checksum": "checksum",
     "processBehavior": "SAVE",
     "locale": "de-DE",
     "childDirected": true,
