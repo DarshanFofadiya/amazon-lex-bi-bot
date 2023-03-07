@@ -57,9 +57,7 @@
         "responseCard": "1"
     },
     "idleSessionTTLInSeconds": 300,
-    "voiceId": "Darshan",
-    "processBehavior": "SAVE",
+    "voiceId": "Darshan"
     "locale": "en-US",
-    "childDirected": true,
-    "createVersion": true
+    "childDirected": false
 }
