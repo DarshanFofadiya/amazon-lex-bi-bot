@@ -27,7 +27,7 @@ aws glue create-database --database-input "Name=$ATHENA_DB,Description=$ATHENA_D
 # Create TICKIT scenario1 table in Athena
 echo "Creating users table..."
 aws athena start-query-execution \
-    --query-string "create external table scenario1 (merchant_customer_id INT, channel STRING, gl STRING, gl_id INT, category STRING, net_ordered_gms_wk9 float, net_ordered_gms_wk8 float, net_ordered_gms_wk7 float, net_ordered_gms_wk6 float, am STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LOCATION '$ATHENA_BUCKET/scenario1';" \
+    --query-string "create external table scenario1 (merchant_customer_id STRING, channel STRING, gl STRING, gl_id INT, category STRING, net_ordered_gms_wk9 float, net_ordered_gms_wk8 float, net_ordered_gms_wk7 float, net_ordered_gms_wk6 float, am STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LOCATION '$ATHENA_BUCKET/scenario1';" \
     --query-execution-context "Database=$ATHENA_DB" \
     --result-configuration "OutputLocation=$ATHENA_BUCKET/output/" \
     >/dev/null

@@ -2,6 +2,9 @@
         "name": "am",
         "description": "am id in the data",
         "valueSelectionStrategy": "ORIGINAL_VALUE", 
-        "enumerationValues": []
+        "enumerationValues": [
+                {"value": "am"},
+                {"value":  "account manager"}
+        ]
 }
 
