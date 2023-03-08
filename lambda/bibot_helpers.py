@@ -85,10 +85,10 @@ def get_slot_values(slot_values, intent_request):
     
     slots = intent_request['currentIntent']['slots']
 
-    for key,config in bibot.SLOT_CONFIG.items():
-        logger.debug("key is ", key)
+    for key, config in bibot.SLOT_CONFIG.items():
+        logger.debug("key is ", str(key))
         slot_values[key] = slots.get(key)
-        logger.debug('<<BIBot>> retrieving slot value for %s = %s', key, slot_values[key])
+        logger.debug('<<BIBot>> retrieving slot value for %s = %s', str(key), str(slot_values[key]))
         if slot_values[key]:
             logger.debug("the if condition was satisfied")
             if config.get('type', bibot.ORIGINAL_VALUE) == bibot.TOP_RESOLUTION:
