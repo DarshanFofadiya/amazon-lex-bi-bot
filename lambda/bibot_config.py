@@ -19,7 +19,7 @@ ORIGINAL_VALUE = 0
 TOP_RESOLUTION = 1
 
 SLOT_CONFIG = {
-    'am': {'type': TOP_RESOLUTION, 'remember': True, 'error': 'I could not find an am called "{}".'},
+    'am': {'type': ORIGINAL_VALUE, 'remember': True, 'error': 'I could not find an am called "{}".'},
     'event_name':       {'type': TOP_RESOLUTION, 'remember': True,  'error': 'I couldn\'t find an event called "{}".'},
     'event_month':      {'type': ORIGINAL_VALUE, 'remember': True},
     'venue_name':       {'type': ORIGINAL_VALUE, 'remember': True},
