@@ -86,22 +86,22 @@ def get_slot_values(slot_values, intent_request):
     slots = intent_request['currentIntent']['slots']
 
     for key, config in bibot.SLOT_CONFIG.items():
-        logger.debug("key is ", str(key))
+        #logger.debug("key is ", str(key))
         slot_values[key] = slots.get(key)
-        logger.debug('<<BIBot>> retrieving slot value for %s = %s', str(key), str(slot_values[key]))
-        if slot_values[key]:
-            logger.debug("the if condition was satisfied")
-            if config.get('type', bibot.ORIGINAL_VALUE) == bibot.TOP_RESOLUTION:
-                logger.debug("it wasn't top resolution")
-                # get the resolved slot name of what the user said/typed
-                if len(intent_request['currentIntent']['slotDetails'][key]['resolutions']) > 0:
-                    slot_values[key] = intent_request['currentIntent']['slotDetails'][key]['resolutions'][0]['value']
-                else:
-                    errorMsg = bibot.SLOT_CONFIG[key].get('error', 'Sorry, I don\'t understand "{}".')
-                    raise bibot.SlotError(errorMsg.format(slots.get(key)))
-                
-            slot_values[key] = userexits.post_process_slot_value(key, slot_values[key])
-            logger.debug("slot value after all the processing ", slot_values[key])
+        #logger.debug('<<BIBot>> retrieving slot value for %s = %s', str(key), str(slot_values[key]))
+        # if slot_values[key]:
+        #     logger.debug("the if condition was satisfied")
+        #     if config.get('type', bibot.ORIGINAL_VALUE) == bibot.TOP_RESOLUTION:
+        #         logger.debug("it wasn't top resolution")
+        #         # get the resolved slot name of what the user said/typed
+        #         if len(intent_request['currentIntent']['slotDetails'][key]['resolutions']) > 0:
+        #             slot_values[key] = intent_request['currentIntent']['slotDetails'][key]['resolutions'][0]['value']
+        #         else:
+        #             errorMsg = bibot.SLOT_CONFIG[key].get('error', 'Sorry, I don\'t understand "{}".')
+        #             raise bibot.SlotError(errorMsg.format(slots.get(key)))
+        #
+        #     slot_values[key] = userexits.post_process_slot_value(key, slot_values[key])
+        #     logger.debug("slot value after all the processing ", slot_values[key])
     return slot_values
 
 
