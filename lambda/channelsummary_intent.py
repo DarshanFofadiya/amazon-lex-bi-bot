@@ -63,6 +63,7 @@ def channelsummary_intent_handler(intent_request, session_attributes):
     try:
         slot_values = helpers.get_slot_values(slot_values, intent_request)
     except bibot.SlotError as err:
+        logger.debug("encountered an error in getting the slot values")
         return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText','content': str(err)})   
 
     logger.debug('<<BIBot>> "top_intent_handler(): slot_values: %s', slot_values)
