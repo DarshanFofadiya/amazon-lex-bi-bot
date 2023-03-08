@@ -8,30 +8,14 @@
         }, 
         {
             "intentVersion": "$LATEST", 
-            "intentName": "Top_Intent"
-        }, 
+            "intentName": "Channelsummary_Intent"
+        },
         {
-            "intentVersion": "$LATEST", 
-            "intentName": "Compare_Intent"
-        }, 
-        {
-            "intentVersion": "$LATEST", 
-            "intentName": "Count_Intent"
-        }, 
-        {
-            "intentVersion": "$LATEST", 
-            "intentName": "Switch_Intent"
-        }, 
-        {
-            "intentVersion": "$LATEST", 
+            "intentVersion": "$LATEST",
             "intentName": "Reset_Intent"
-        }, 
+        },
         {
-            "intentVersion": "$LATEST", 
-            "intentName": "Refresh_Intent"
-        }, 
-        {
-            "intentVersion": "$LATEST", 
+            "intentVersion": "$LATEST",
             "intentName": "Goodbye_Intent"
         }
     ],

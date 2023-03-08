@@ -1,0 +1,41 @@
+{
+    "name": "Channelsummary_Intent",
+    "description": "GMS summary by channel for an AM",
+    "sampleUtterances": [
+        "Show me channel summary for {am}",
+        "What is the channel summary for {am}"
+    ], 
+    "slots": [
+        {
+            "slotType": "am",
+            "name": "am",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2, 
+                "messages": [
+                    {
+                        "content": "am id",
+                        "contentType": "PlainText"
+                    }
+                ]
+            }, 
+            "priority": 1, 
+            "sampleUtterances": []
+        }
+    ], 
+    "conclusionStatement": {
+      "messages": [
+        {
+          "content": "via code hook",
+          "contentType": "PlainText"
+        }
+      ]
+    },
+    "fulfillmentActivity": {
+        "type": "CodeHook", 
+        "codeHook": {
+            "uri": "{{lambda-arn}}", 
+            "messageVersion": "1.0"
+        }
+    }
+}
