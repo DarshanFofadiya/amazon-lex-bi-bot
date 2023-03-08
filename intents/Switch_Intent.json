@@ -1,0 +1,43 @@
+{
+    "name": "Switch_Intent",
+    "description": "Get the output for the previous intent for a different slot",
+    "sampleUtterances": [
+      "how about {am}",
+      "what is it for {am}",
+      "and for {am}"
+    ],
+    "slots": [
+        {
+            "slotType": "am",
+            "name": "am",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    {
+                        "content": "am id",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 1,
+            "slotTypeVersion": "$LATEST",
+            "sampleUtterances": []
+        }
+    ],
+    "fulfillmentActivity": {
+        "type": "CodeHook", 
+        "codeHook": {
+            "uri": "{{lambda-arn}}", 
+            "messageVersion": "1.0"
+        }
+    }, 
+    "conclusionStatement": {
+      "messages": [
+        {
+          "content": "via code hook",
+          "contentType": "PlainText"
+        }
+      ]
+    }
+}
