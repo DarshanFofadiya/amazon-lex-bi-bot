@@ -96,7 +96,7 @@ def channelsummary_intent_handler(intent_request, session_attributes):
 
     # execute Athena query
     response = helpers.execute_athena_query(query_string)
-    logger.debug('Response from Athena is ', json.dumps(response))
+    #logger.debug('Response from Athena is ', json.dumps(response))
     # Build response text for Lex
     response_string = 'The summary is as below \n'
 
