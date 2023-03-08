@@ -12,6 +12,10 @@
         },
         {
             "intentVersion": "$LATEST",
+            "intentName": "Switch_Intent"
+        },
+        {
+            "intentVersion": "$LATEST",
             "intentName": "Reset_Intent"
         },
         {
