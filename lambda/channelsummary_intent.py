@@ -79,7 +79,7 @@ def channelsummary_intent_handler(intent_request, session_attributes):
     select_clause = TOP_SELECT
 
     try:
-        where_clause = TOP_WHERE.format(slot_values.get('am'))
+        where_clause = TOP_WHERE.format("'" + slot_values.get('am') + "'")
         order_by_clause = TOP_ORDERBY
     except KeyError:
         return helpers.close(
