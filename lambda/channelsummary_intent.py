@@ -99,7 +99,16 @@ def channelsummary_intent_handler(intent_request, session_attributes):
     logger.debug('Response from Athena is ', json.dumps(response))
     # Build response text for Lex
     response_string = 'The summary is as below \n'
-    response_string += str(json.dumps(response))
+
+    #formatting the output string
+    str_op = ""
+    for index, row in enumerate(response['ResultSet']['Rows']):
+        if index != 0:
+            str_op = str_op + row['Data'][0]['VarCharValue'] + " : " + row['Data'][1]['VarCharValue']
+
+            if index != len(response['ResultSet']['Rows']) - 1:
+                str_op = str_op + " and "
+    response_string += str_op
 
     logger.debug('<<BIBot>> response_string = ' + response_string) 
 
