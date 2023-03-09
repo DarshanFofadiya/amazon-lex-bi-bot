@@ -64,13 +64,16 @@ def top_intent_handler(intent_request, session_attributes):
     try:
         slot_values = helpers.get_slot_values(slot_values, intent_request)
     except bibot.SlotError as err:
-        return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText','content': str(err)})   
+        return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText','content': str(err)})
 
     logger.debug('<<BIBot>> "top_intent_handler(): slot_values: %s', slot_values)
 
     # Retrieve "remembered" slot values from session attributes
     slot_values = helpers.get_remembered_slot_values(slot_values, session_attributes)
     logger.debug('<<BIBot>> "top_intent_handler(): slot_values afer get_remembered_slot_values: %s', slot_values)
+
+    if slot_values.get('am') is None:
+        return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText', 'content': str("please provide am id")})
 
     if slot_values.get('count') is None:
         slot_values['count'] = TOP_DEFAULT_COUNT
