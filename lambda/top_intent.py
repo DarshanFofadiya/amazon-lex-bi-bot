@@ -98,6 +98,7 @@ def top_intent_handler(intent_request, session_attributes):
 
     if result_count > 0:
         merchant_store = list()
+        str_op = ""
         for index, row in enumerate(response['ResultSet']['Rows']):
             if index != 0:
                 str_op = str_op + row['Data'][0]['VarCharValue'] + " : " + row['Data'][1]['VarCharValue']
