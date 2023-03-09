@@ -1,0 +1,10 @@
+{
+        "name": "merchant",
+        "description": "merchant customer id in the data",
+        "valueSelectionStrategy": "ORIGINAL_VALUE",
+        "enumerationValues": [
+                {"value": "merchant"},
+                {"value":  "merchant id"}
+        ]
+}
+

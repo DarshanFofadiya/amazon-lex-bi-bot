@@ -1,0 +1,60 @@
+{
+    "name": "Trend_Intent",
+    "description": "Get trailing 4 week trend for merchants and ams",
+    "sampleUtterances": [
+        "show me trend for {am} for {merchant_customer_id}",
+        "what is the trend for me"
+    ],
+    "slots": [
+        {
+            "slotType": "am",
+            "name": "am",
+            "slotConstraint": "Optional",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    {
+                        "content": "what is the am id",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 1,
+            "slotTypeVersion": "$LATEST",
+            "sampleUtterances": []
+        },
+        {
+            "slotType": "merchant",
+            "name": "merchant",
+            "slotConstraint": "Optional",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    {
+                        "content": "what is the merchant_id",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 2,
+            "slotTypeVersion": "$LATEST",
+            "sampleUtterances": []
+        }
+
+    ],
+    "conclusionStatement": {
+      "messages": [
+        {
+          "content": "via code hook",
+          "contentType": "PlainText"
+        }
+      ]
+    },
+    "fulfillmentActivity": {
+        "type": "CodeHook",
+        "codeHook": {
+            "uri": "{{lambda-arn}}",
+            "messageVersion": "1.0"
+        }
+    }
+}
