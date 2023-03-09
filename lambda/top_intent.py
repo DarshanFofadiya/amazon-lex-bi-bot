@@ -23,11 +23,12 @@ import bibot_helpers as helpers
 import bibot_userexits as userexits
 
 # SELECT statement for Top query
-TOP_SELECT = "SELECT channel, SUM(net_ordered_gms_wk9) as net_ordered_gms FROM scenario1"
+TOP_SELECT  = "SELECT merchant_customer_id, SUM(net_ordered_gms_wk9) as net_ordered_gms FROM scenario1"
 #TOP_JOIN    = " WHERE e.event_id = s.event_id AND v.venue_id = e.venue_id AND c.cat_id = e.cat_id AND d.date_id = e.date_id "
-TOP_WHERE = " WHERE am = {}"
-TOP_ORDERBY = " GROUP BY channel ORDER BY net_ordered_gms desc"
-#TOP_DEFAULT_COUNT = '5'
+TOP_WHERE   = " WHERE am = {}"
+TOP_ORDERBY = " GROUP BY merchant_customer_id ORDER BY ticket_sales desc "
+BOTTOM_ORDERBY = " GROUP BY am ORDER BY ticket_sales asc "
+TOP_DEFAULT_COUNT = '5'
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -44,10 +45,10 @@ def lambda_handler(event, context):
         return helpers.close(session_attributes, 'Fulfilled',
             {'contentType': 'PlainText', 'content': config_error})   
     else:
-        return channelsummary_intent_handler(event, session_attributes)
+        return top_intent_handler(event, session_attributes)
 
 
-def channelsummary_intent_handler(intent_request, session_attributes):
+def top_intent_handler(intent_request, session_attributes):
     method_start = time.perf_counter()
 
     logger.debug('<<BIBot>> top_intent_handler: session_attributes = ' + json.dumps(session_attributes))
@@ -55,7 +56,7 @@ def channelsummary_intent_handler(intent_request, session_attributes):
     session_attributes['greetingCount'] = '1'
     session_attributes['resetCount'] = '0'
     session_attributes['finishedCount'] = '0'
-    session_attributes['lastIntent'] = 'Channelsummary_Intent'
+    session_attributes['lastIntent'] = 'Top_Intent'
 
     # Retrieve slot values from the current request
     slot_values = session_attributes.get('slot_values')
@@ -63,7 +64,6 @@ def channelsummary_intent_handler(intent_request, session_attributes):
     try:
         slot_values = helpers.get_slot_values(slot_values, intent_request)
     except bibot.SlotError as err:
-        logger.debug("encountered an error in getting the slot values")
         return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText','content': str(err)})   
 
     logger.debug('<<BIBot>> "top_intent_handler(): slot_values: %s', slot_values)
@@ -72,49 +72,44 @@ def channelsummary_intent_handler(intent_request, session_attributes):
     slot_values = helpers.get_remembered_slot_values(slot_values, session_attributes)
     logger.debug('<<BIBot>> "top_intent_handler(): slot_values afer get_remembered_slot_values: %s', slot_values)
 
+    if slot_values.get('count') is None:
+        slot_values['count'] = TOP_DEFAULT_COUNT
+
     # store updated slot values
     logger.debug('<<BIBot>> "top_intent_handler(): calling remember_slot_values_NEW: %s', slot_values)
     helpers.remember_slot_values(slot_values, session_attributes)
 
-    if slot_values.get('am') is None:
-        response_string = 'Please tell me which AM do you want the summary for'
-        return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText','content': response_string})   
 
     select_clause = TOP_SELECT
+    top_orderby_clause = TOP_ORDERBY
+    # add JOIN clauses 
+    where_clause = TOP_WHERE.format("'" + slot_values.get('am') + "'")
+    limit_clause = " LIMIT {}".format(slot_values.get('count'))
 
-    try:
-        where_clause = TOP_WHERE.format("'" + slot_values.get('am') + "'")
-        order_by_clause = TOP_ORDERBY
-    except KeyError:
-        return helpers.close(
-            session_attributes,
-            'Fulfilled',
-            {
-                'contentType': 'PlainText',
-                'content': "Sorry, I couldn't fulfill your request. Please rephrase and try again providing the correct AM ID"
-            }
-        )  
-
-    query_string = select_clause + where_clause + order_by_clause
+    query_string = select_clause + where_clause + top_orderby_clause + limit_clause
     logger.debug('<<BIBot>> Athena Query String = ' + query_string)            
 
     # execute Athena query
     response = helpers.execute_athena_query(query_string)
-    #logger.debug('Response from Athena is ', json.dumps(response))
+
     # Build response text for Lex
-    response_string = 'The summary is as below \n'
+    response_string = 'The top {} merchants are \n'.format(slot_values.get('count'))
+    result_count = len(response['ResultSet']['Rows']) - 1
 
-    #formatting the output string
-    str_op = ""
-    for index, row in enumerate(response['ResultSet']['Rows']):
-        if index != 0:
-            str_op = str_op + row['Data'][0]['VarCharValue'] + " : " + row['Data'][1]['VarCharValue']
+    if result_count > 0:
+        merchant_store = list()
+        for index, row in enumerate(response['ResultSet']['Rows']):
+            if index != 0:
+                str_op = str_op + row['Data'][0]['VarCharValue'] + " : " + row['Data'][1]['VarCharValue']
+                merchant_store.append(row['Data'][0]['VarCharValue'])
+                if index != len(response['ResultSet']['Rows']) - 1:
+                    str_op = str_op + " and "
+        response_string += str_op
 
-            if index != len(response['ResultSet']['Rows']) - 1:
-                str_op = str_op + " and "
-    response_string += str_op
 
     logger.debug('<<BIBot>> response_string = ' + response_string) 
+    session_attributes['merchant_store'] = merchant_store
+    logger.debug('<<BIBot>> lambda_handler: session_attributes = ' + json.dumps(session_attributes))
 
     method_duration = time.perf_counter() - method_start
     method_duration_string = 'method time = %.0f' % (method_duration * 1000) + ' ms'

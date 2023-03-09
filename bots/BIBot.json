@@ -3,6 +3,10 @@
     "description": "BIBot - a SQL query bot for the TICKIT database",
     "intents": [
         {
+            "intentVersion": "$LATEST",
+            "intentName": "Top_Intent"
+        },
+        {
             "intentVersion": "$LATEST", 
             "intentName": "Hello_Intent"
         }, 

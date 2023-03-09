@@ -21,6 +21,7 @@ import json
 import bibot_helpers as helpers
 import bibot_userexits as userexits
 import channelsummary_intent
+import top_intent
 
 
 #
@@ -66,6 +67,7 @@ def switch_intent_handler(intent_request, session_attributes):
 
 
 INTENT_CONFIG = {
-    'Channelsummary_Intent': {'handler': channelsummary_intent.channelsummary_intent_handler}
+    'Channelsummary_Intent': {'handler': channelsummary_intent.channelsummary_intent_handler},
+    'Top_Intent': {'handler': top_intent.top_intent_handler}
 }
 

@@ -1,9 +1,10 @@
 {
-    "name": "Channelsummary_Intent",
-    "description": "GMS summary by channel for an AM",
+    "name": "Top_Intent", 
+    "description": "Top n merchants",
     "sampleUtterances": [
-        "Show me channel summary for {am}",
-        "What is the channel summary for {am}"
+        "show me top {count} merchants for {am}",
+        "show me my top {count} merchants",
+        "who are my top {count} merchants"
     ], 
     "slots": [
         {
@@ -11,18 +12,35 @@
             "name": "am",
             "slotConstraint": "Required",
             "valueElicitationPrompt": {
-                "maxAttempts": 2, 
+                "maxAttempts": 2,
                 "messages": [
                     {
                         "content": "what is the am id",
                         "contentType": "PlainText"
                     }
                 ]
-            }, 
+            },
             "priority": 1,
             "slotTypeVersion": "$LATEST",
             "sampleUtterances": []
+        },
+        {
+            "slotType": "AMAZON.NUMBER", 
+            "name": "count", 
+            "slotConstraint": "Optional", 
+            "valueElicitationPrompt": {
+                "maxAttempts": 2, 
+                "messages": [
+                    {
+                        "content": "number", 
+                        "contentType": "PlainText"
+                    }
+                ]
+            }, 
+            "priority": 2,
+            "sampleUtterances": []
         }
+
     ], 
     "conclusionStatement": {
       "messages": [
