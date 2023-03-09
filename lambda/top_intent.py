@@ -100,19 +100,21 @@ def top_intent_handler(intent_request, session_attributes):
     result_count = len(response['ResultSet']['Rows']) - 1
 
     if result_count > 0:
-        merchant_store = list()
+        merchant_store = dict()
         str_op = ""
+        merchant_store_index = 0
         for index, row in enumerate(response['ResultSet']['Rows']):
             if index != 0:
                 str_op = str_op + row['Data'][0]['VarCharValue']
-                merchant_store.append(row['Data'][0]['VarCharValue'])
+                merchant_store[str(merchant_store_index)] = (row['Data'][0]['VarCharValue'])
+                merchant_store_index += 1
                 if index != len(response['ResultSet']['Rows']) - 1:
                     str_op = str_op + ", "
         response_string += str_op
 
 
     logger.debug('<<BIBot>> response_string = ' + response_string) 
-    #session_attributes['merchant_store'] = merchant_store
+    session_attributes['merchant_store'] = merchant_store
     logger.debug('<<BIBot>> lambda_handler: session_attributes = ' + json.dumps(session_attributes))
 
     method_duration = time.perf_counter() - method_start
