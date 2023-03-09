@@ -113,8 +113,9 @@ def top_intent_handler(intent_request, session_attributes):
         response_string += str_op
 
 
-    logger.debug('<<BIBot>> response_string = ' + response_string) 
-    session_attributes['merchant_store'] = json.dumps(merchant_store)
+    logger.debug('<<BIBot>> response_string = ' + response_string)
+    if len(merchant_store) > 0:
+        session_attributes['merchant_store'] = json.dumps(merchant_store)
     logger.debug('<<BIBot>> lambda_handler: session_attributes = ' + json.dumps(session_attributes))
 
     method_duration = time.perf_counter() - method_start

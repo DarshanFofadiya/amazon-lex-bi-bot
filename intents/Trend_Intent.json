@@ -9,7 +9,7 @@
         {
             "slotType": "am",
             "name": "am",
-            "slotConstraint": "Optional",
+            "slotConstraint": "Required",
             "valueElicitationPrompt": {
                 "maxAttempts": 2,
                 "messages": [
@@ -26,7 +26,7 @@
         {
             "slotType": "merchant",
             "name": "merchant",
-            "slotConstraint": "Optional",
+            "slotConstraint": "Required",
             "valueElicitationPrompt": {
                 "maxAttempts": 2,
                 "messages": [
