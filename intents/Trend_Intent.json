@@ -2,7 +2,7 @@
     "name": "Trend_Intent",
     "description": "Get trailing 4 week trend for merchants and ams",
     "sampleUtterances": [
-        "show me trend for {am} for {merchant_customer_id}",
+        "show me trend for {am} for {merchant}",
         "what is the trend for me"
     ],
     "slots": [
