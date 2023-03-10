@@ -25,8 +25,8 @@ import bibot_userexits as userexits
 
 # SELECT statement for Trend query
 TREND_SELECT = "SELECT sum(net_ordered_gms_wk9) as gms_curr_week, sum(net_ordered_gms_wk8) as gms_curr_weekminus1, sum(net_ordered_gms_wk7) as gms_curr_weekminus2, sum(net_ordered_gms_wk6) as gms_curr_weekminus3 from scenario1"
-TREND_WHERE_AM = "where am = {}"
-TREND_WHERE_MERCHANT = "where merchant_customer_id = {}"
+TREND_WHERE_AM = " where am = {}"
+TREND_WHERE_MERCHANT = " where merchant_customer_id = {}"
 
 
 logger = logging.getLogger()
