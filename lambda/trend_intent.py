@@ -38,7 +38,7 @@ TREND_SELECT_CHANNEL = "select channel, gms_curr_week, gms_curr_weekminus1, gms_
 cast(cast(100*(cast(net_ordered_gms_wk8 as double)/net_ordered_gms_wk7 -1) as int) as varchar) || '%' as week_over_week \
 from \
 ( \
-select sum(net_ordered_gms_wk8) as net_ordered_gms_wk8, sum(net_ordered_gms_wk7) as net_ordered_gms_wk7, \
+select channel, sum(net_ordered_gms_wk8) as net_ordered_gms_wk8, sum(net_ordered_gms_wk7) as net_ordered_gms_wk7, \
 '$' || regexp_replace(cast(sum(net_ordered_gms_wk8) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_week, \
 '$' || regexp_replace(cast(sum(net_ordered_gms_wk7) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_weekminus1, \
 '$' || regexp_replace(cast(sum(net_ordered_gms_wk6) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_weekminus2, \
@@ -113,16 +113,19 @@ def trend_intent_handler(intent_request, session_attributes):
 
     # Build and execute query
     select_clause = TREND_SELECT
-
+    select_clause_channel = TREND_SELECT_CHANNEL
     if slot_values.get('merchant') is not None:
         where_clause = TREND_WHERE_MERCHANT.format(("'" + slot_values.get('merchant') + "'"))
     else:
         where_clause = TREND_WHERE_AM.format(("'" + slot_values.get('am') + "'"))
 
+    groupby_clause = TREND_GROUP_BY
+
     query_string = select_clause + where_clause
     query_string_overall = query_string + ")"
-    query_string_channel = query_string + TREND_GROUP_BY + ")"
+    query_string_channel = select_clause_channel + where_clause + groupby_clause + ")"
     logger.debug('<<BIBot>> Athena Query String overall = ' + query_string_overall)
+    logger.debug('<<BIBot>> Athena Query String channel = ' + query_string_channel)
 
     try:
         response = helpers.execute_athena_query(query_string_overall)

@@ -108,7 +108,7 @@ def channelsummary_intent_handler(intent_request, session_attributes):
     str_op = ""
     for index, row in enumerate(response['ResultSet']['Rows']):
         if index != 0:
-            str_op = str_op + row['Data'][0]['VarCharValue'] + " : " + row['Data'][1]['VarCharValue']
+            str_op = str_op + row['Data'][0]['VarCharValue'] + " GMS : " + row['Data'][1]['VarCharValue']
 
             if index != len(response['ResultSet']['Rows']) - 1:
                 str_op = str_op + " and "
