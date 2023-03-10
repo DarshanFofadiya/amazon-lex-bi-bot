@@ -2,14 +2,16 @@
     "name": "Trend_Intent",
     "description": "Get trailing 4 week trend for merchants and ams",
     "sampleUtterances": [
-        "show me trend for {am} for {merchant}",
-        "what is the trend for me"
+        "show me trend for merchant {merchant}",
+        "what is my trend",
+        "show me my trend",
+        "what is the trend for am {am}"
     ],
     "slots": [
         {
             "slotType": "am",
             "name": "am",
-            "slotConstraint": "Required",
+            "slotConstraint": "Optional",
             "valueElicitationPrompt": {
                 "maxAttempts": 2,
                 "messages": [
@@ -19,7 +21,7 @@
                     }
                 ]
             },
-            "priority": 1,
+            "priority": 2,
             "slotTypeVersion": "$LATEST",
             "sampleUtterances": []
         },

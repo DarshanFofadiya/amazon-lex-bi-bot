@@ -54,36 +54,16 @@ def reset_intent_handler(intent_request, session_attributes):
     slots_to_reset = helpers.get_slot_values(None, intent_request)
 
     # check to see if any remembered slots need forgetting
-    for key,config in bibot.SLOT_CONFIG.items():
-        if key == 'dimension':    # see below
-            continue
+    for key, config in bibot.SLOT_CONFIG.items():
         if config.get('remember', False):
             if slots_to_reset.get(key):        # asking to reset venue_city: los angeles for example
                 if slot_values.get(key):
-                    value = userexits.post_process_dimension_output(key, slot_values.get(key))
-                    dimensions_reset += ' {}'.format(value.title())
                     logger.debug('<<BIBot>> reset_intent_handler() - forgetting slot %s value %s', key, slot_values[key])
                     slot_values[key] = None
                 else:
-                    # message = "I wasn't remembering {} - {} anyway.".format(key, slots_to_reset.get(key))
                     message = "I wasn't remembering {} anyway.".format(slots_to_reset.get(key))
                     return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText', 'content': message})
 
-    # check for special case, where the ask is to forget the dimension by name
-    dimension = slots_to_reset.get('dimension')
-    if dimension and bibot.DIMENSIONS.get(dimension):
-        slot_key = bibot.DIMENSIONS[dimension].get('slot')
-        if slot_values.get(slot_key):
-            logger.debug('<<BIBot>> reset_intent_handler() - forgetting %s (%s)', dimension, slot_values[slot_key])
-            value = userexits.post_process_dimension_output(dimension, slot_values[slot_key])
-            dimensions_reset += ' {}'.format(value).title()
-            logger.debug('<<BIBot>> reset_intent_handler() - forgetting dimension %s slot_key %s value %s', dimension, slot_key, slot_values[slot_key])
-            slot_values[slot_key] = None
-
-    if dimensions_reset == '':
-        slot_values = {key: None for key in bibot.SLOT_CONFIG}
-        dimensions_reset = 'everything'
-    
     helpers.remember_slot_values(slot_values, session_attributes)
 
     response_string = 'OK, I have reset ' + dimensions_reset + '.'
