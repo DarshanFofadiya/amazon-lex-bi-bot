@@ -67,9 +67,16 @@ def trend_intent_handler(intent_request, session_attributes):
         
     logger.debug('<<BIBot>> "trend_intent_handler(): slot_values: %s', slot_values)
 
+    #check if merchant slot is present then delete am slot
+
+    if slot_values.get('merchant') is not None:
+        delete_am_slot = True
     # Retrieve "remembered" slot values from session attributes
     slot_values = helpers.get_remembered_slot_values(slot_values, session_attributes)
     logger.debug('<<BIBot>> "count_intent_handler(): slot_values afer get_remembered_slot_values: %s', slot_values)
+
+    if delete_am_slot:
+        slot_values['am'] = None
 
     if slot_values.get('merchant') is None and slot_values.get('am') is None:
         return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText', 'content':
@@ -108,7 +115,7 @@ def trend_intent_handler(intent_request, session_attributes):
     result_count = len(response['ResultSet']['Rows']) - 1
 
     if result_count > 0:
-        str_op = "GMS Current Week: {}, GMS Current Week-1: {}, GMS Current Week-2: {}, GMS Current Week-3: {}"
+        str_op = "\n GMS Current Week: {} \n, GMS Current Week-1: {} \n , GMS Current Week-2: {} \n , GMS Current Week-3: {} \n"
         row_data = response['ResultSet']['Rows'][1]['Data']
         str_op = str_op.format(row_data[0]['VarCharValue'], row_data[1]['VarCharValue'], row_data[2]['VarCharValue'], row_data[3]['VarCharValue'])
         response_string += '\n'
