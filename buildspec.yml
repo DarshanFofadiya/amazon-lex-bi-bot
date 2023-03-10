@@ -8,10 +8,11 @@ phases:
     commands:
       - echo Build started on `date`
       - cd lambda
+      - python ../zip.py ../Identifydecline_Intent.zip identifydecline_intent.py bibot_config.py bibot_helpers.py bibot_userexits.py
       - python ../zip.py ../Trend_Intent.zip trend_intent.py bibot_config.py bibot_helpers.py bibot_userexits.py
       - python ../zip.py ../Top_Intent.zip top_intent.py bibot_config.py bibot_helpers.py bibot_userexits.py
       - python ../zip.py ../Bottom_Intent.zip bottom_intent.py bibot_config.py bibot_helpers.py bibot_userexits.py
-      - python ../zip.py ../Switch_Intent.zip switch_intent.py bibot_config.py bibot_helpers.py bibot_userexits.py channelsummary_intent.py top_intent.py bottom_intent.py trend_intent.py
+      - python ../zip.py ../Switch_Intent.zip switch_intent.py bibot_config.py bibot_helpers.py bibot_userexits.py channelsummary_intent.py top_intent.py bottom_intent.py trend_intent.py identifydecline_intent.py
       - python ../zip.py ../Channelsummary_Intent.zip channelsummary_intent.py bibot_config.py bibot_helpers.py bibot_userexits.py
       - python ../zip.py ../Reset_Intent.zip reset_intent.py bibot_config.py bibot_helpers.py bibot_userexits.py
       - python ../zip.py ../Hello_Intent.zip hello_intent.py bibot_config.py bibot_helpers.py bibot_userexits.py

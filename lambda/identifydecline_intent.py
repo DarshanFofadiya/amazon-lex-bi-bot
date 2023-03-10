@@ -22,12 +22,18 @@ import bibot_config as bibot
 import bibot_helpers as helpers
 import bibot_userexits as userexits
 
-# SELECT statement for Top query
-TOP_SELECT = "SELECT merchant_customer_id, SUM(net_ordered_gms_wk8) as net_ordered_gms FROM scenario1"
-# TOP_JOIN    = " WHERE e.event_id = s.event_id AND v.venue_id = e.venue_id AND c.cat_id = e.cat_id AND d.date_id = e.date_id "
-TOP_WHERE = " WHERE am = {}"
-BOTTOM_ORDERBY = " GROUP BY merchant_customer_id ORDER BY net_ordered_gms asc "
-TOP_DEFAULT_COUNT = '5'
+DECLINE_SELECT = "select merchant_customer_id, \
+'$' || regexp_replace(cast(net_ordered_gms_wk8 as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_week, \
+'$' || regexp_replace(cast(net_ordered_gms_wk7 as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_weekminus1, \
+cast(cast(100*(cast(net_ordered_gms_wk8 as double)/net_ordered_gms_wk7 -1) as int) as varchar) || '%' as week_over_week \
+from scenario1 \
+where channel = 'FBA' \
+and net_ordered_gms_wk8 > 500 \
+and 100*(cast(net_ordered_gms_wk8 as double)/net_ordered_gms_wk7 -1) < 0 "
+
+DECLINE_WHERE = " and am = {}"
+DECLINE_ORDERBY = " ORDER BY week_over_week DESC"
+DECLINE_DEFAULT_COUNT = '5'
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -44,18 +50,18 @@ def lambda_handler(event, context):
         return helpers.close(session_attributes, 'Fulfilled',
                              {'contentType': 'PlainText', 'content': config_error})
     else:
-        return bottom_intent_handler(event, session_attributes)
+        return identifydecline_intent_handler(event, session_attributes)
 
 
-def bottom_intent_handler(intent_request, session_attributes):
+def identifydecline_intent_handler(intent_request, session_attributes):
     method_start = time.perf_counter()
 
-    logger.debug('<<BIBot>> top_intent_handler: session_attributes = ' + json.dumps(session_attributes))
+    logger.debug('<<BIBot>> identifydecline_intent_handler: session_attributes = ' + json.dumps(session_attributes))
 
     session_attributes['greetingCount'] = '1'
     session_attributes['resetCount'] = '0'
     session_attributes['finishedCount'] = '0'
-    session_attributes['lastIntent'] = 'Bottom_Intent'
+    session_attributes['lastIntent'] = 'Identifydecline_Intent'
 
     # Retrieve slot values from the current request
     slot_values = session_attributes.get('slot_values')
@@ -65,7 +71,7 @@ def bottom_intent_handler(intent_request, session_attributes):
     except bibot.SlotError as err:
         return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText', 'content': str(err)})
 
-    logger.debug('<<BIBot>> "top_intent_handler(): slot_values: %s', slot_values)
+    logger.debug('<<BIBot>> "identifydecline_intent_handler(): slot_values: %s', slot_values)
 
     # Retrieve "remembered" slot values from session attributes
     slot_values = helpers.get_remembered_slot_values(slot_values, session_attributes)
@@ -82,45 +88,39 @@ def bottom_intent_handler(intent_request, session_attributes):
     logger.debug('<<BIBot>> "top_intent_handler(): calling remember_slot_values_NEW: %s', slot_values)
     helpers.remember_slot_values(slot_values, session_attributes)
 
-    select_clause = TOP_SELECT
-    bottom_orderby_clause = BOTTOM_ORDERBY
-    # add JOIN clauses
-    where_clause = TOP_WHERE.format("'" + slot_values.get('am') + "'")
+    select_clause = DECLINE_SELECT
+    where_clause = DECLINE_WHERE.format("'" + slot_values.get('am') + "'")
+    orderby_clause = DECLINE_ORDERBY
     limit_clause = " LIMIT {}".format(slot_values.get('count'))
 
-    query_string = select_clause + where_clause + bottom_orderby_clause + limit_clause
+    query_string = select_clause + where_clause + orderby_clause + limit_clause
     logger.debug('<<BIBot>> Athena Query String = ' + query_string)
 
     # execute Athena query
     response = helpers.execute_athena_query(query_string)
 
     # Build response text for Lex
-    response_string = 'The bottom {} merchants are \n'.format(slot_values.get('count'))
+    response_string = 'Merchants with highest FBA decline Week Over Week  are \n'
     result_count = len(response['ResultSet']['Rows']) - 1
 
     if result_count > 0:
-        merchant_store = dict()
         str_op = ""
         merchant_store_index = 0
         for index, row in enumerate(response['ResultSet']['Rows']):
             if index != 0:
-                str_op = str_op + row['Data'][0]['VarCharValue']
-                merchant_store[str(merchant_store_index)] = (row['Data'][0]['VarCharValue'])
-                merchant_store_index += 1
+                str_op = str_op + " merchant_id : " + row['Data'][0]['VarCharValue'] + " FBA GMS Current Week : " + row['Data'][1]['VarCharValue'] \
+                        + " FBA GMS Last Week : " + row['Data'][2]['VarCharValue'] + " FBA GMS Week Over Week : " + row['Data'][3]['VarCharValue']
                 if index != len(response['ResultSet']['Rows']) - 1:
-                    str_op = str_op + ", "
+                    str_op = str_op + ", " + '\n'
         response_string += str_op
 
     logger.debug('<<BIBot>> response_string = ' + response_string)
-    if len(merchant_store) > 0:
-        session_attributes['merchant_store'] = json.dumps(merchant_store)
-    logger.debug('<<BIBot>> lambda_handler: session_attributes = ' + json.dumps(session_attributes))
 
     method_duration = time.perf_counter() - method_start
     method_duration_string = 'method time = %.0f' % (method_duration * 1000) + ' ms'
     logger.debug('<<BIBot>> "Method duration is: ' + method_duration_string)
 
-    logger.debug('<<BIBot>> bottom_intent_handler() - sessions_attributes = %s, response = %s', session_attributes,
+    logger.debug('<<BIBot>> top_intent_handler() - sessions_attributes = %s, response = %s', session_attributes,
                  {'contentType': 'PlainText', 'content': response_string})
 
     return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText', 'content': response_string})

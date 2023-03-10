@@ -24,6 +24,7 @@ import channelsummary_intent
 import top_intent
 import trend_intent
 import bottom_intent
+import identifydecline_intent
 
 #
 # See additional configuration parameters at bottom 
@@ -71,6 +72,7 @@ INTENT_CONFIG = {
     'Channelsummary_Intent': {'handler': channelsummary_intent.channelsummary_intent_handler},
     'Top_Intent': {'handler': top_intent.top_intent_handler},
     'Bottom_Intent': {'handler': bottom_intent.bottom_intent_handler},
-    'Trend_Intent': {'handler': trend_intent.trend_intent_handler}
+    'Trend_Intent': {'handler': trend_intent.trend_intent_handler},
+    'Identifydecline_Intent': {'handler': identifydecline_intent.identifydecline_intent_handler}
 }
 

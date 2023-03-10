@@ -8,6 +8,10 @@
         },
         {
             "intentVersion": "$LATEST",
+            "intentName": "Identifydecline_Intent"
+        },
+        {
+            "intentVersion": "$LATEST",
             "intentName": "Top_Intent"
         },
         {

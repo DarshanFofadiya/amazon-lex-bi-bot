@@ -1,0 +1,61 @@
+{
+    "name": "Identifydecline_Intent",
+    "description": "Top Declining Merchants",
+    "sampleUtterances": [
+        "show me {count} sellers with highest fba decline",
+        "show me fba declining merchants",
+        "show me merchants whose fba gms declined the most",
+        "show me {count} sellers whose fba gms took the highest hit"
+    ],
+    "slots": [
+        {
+            "slotType": "am",
+            "name": "am",
+            "slotConstraint": "Optional",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    {
+                        "content": "what is the am id",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 1,
+            "slotTypeVersion": "$LATEST",
+            "sampleUtterances": []
+        },
+        {
+            "slotType": "AMAZON.NUMBER",
+            "name": "count",
+            "slotConstraint": "Optional",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    {
+                        "content": "number",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 2,
+            "sampleUtterances": []
+        }
+
+    ],
+    "conclusionStatement": {
+      "messages": [
+        {
+          "content": "via code hook",
+          "contentType": "PlainText"
+        }
+      ]
+    },
+    "fulfillmentActivity": {
+        "type": "CodeHook",
+        "codeHook": {
+            "uri": "{{lambda-arn}}",
+            "messageVersion": "1.0"
+        }
+    }
+}
