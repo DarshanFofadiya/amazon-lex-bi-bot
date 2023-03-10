@@ -135,9 +135,9 @@ def trend_intent_handler(intent_request, session_attributes):
     try:
         response_channel = helpers.execute_athena_query(query_string_channel)
     except:
-        response = "Error"
+        response_channel = "Error"
 
-    if response != "Error":
+    if response != "Error" and response_channel != "Error":
         if slot_values.get('merchant') is not None:
             response_string = 'The last 4 week GMS trend for merchant_id {} is \n'.format(slot_values.get('merchant'))
         else:
@@ -155,7 +155,7 @@ def trend_intent_handler(intent_request, session_attributes):
     result_count_channel = len(response_channel['ResultSet']['Rows']) - 1
     if result_count_channel > 0:
         str_op_channel = "\n{} GMS Current Week: {} \n,{} GMS Current Week-1: {} \n ,{} GMS Current Week-2: {} \n ,{} GMS Current Week-3: {} \n,{} GMS Current Week Over Week: {}"
-        row_data = response['ResultSet']['Rows'][1]['Data']
+        row_data = response_channel['ResultSet']['Rows'][1]['Data']
         str_op_channel = str_op_channel.format(row_data[0]['VarCharValue'], row_data[1]['VarCharValue'], row_data[0]['VarCharValue'], row_data[2]['VarCharValue'],
                                row_data[0]['VarCharValue'], row_data[3]['VarCharValue'], row_data[0]['VarCharValue'] ,row_data[4]['VarCharValue'],
                                row_data[0]['VarCharValue'], row_data[5]['VarCharValue'])
