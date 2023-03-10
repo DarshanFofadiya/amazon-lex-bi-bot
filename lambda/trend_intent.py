@@ -64,7 +64,7 @@ def trend_intent_handler(intent_request, session_attributes):
     except bibot.SlotError as err:
         return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText','content': str(err)})   
         
-    logger.debug('<<BIBot>> "count_intent_handler(): slot_values: %s', slot_values)
+    logger.debug('<<BIBot>> "trend_intent_handler(): slot_values: %s', slot_values)
 
     # Retrieve "remembered" slot values from session attributes
     slot_values = helpers.get_remembered_slot_values(slot_values, session_attributes)

@@ -52,7 +52,7 @@ do
 
     aws lambda add-permission \
         --function-name ${LAMBDA}_${i} \
-        --statement-id chatbot-fulfillment \
+        --statement-id chatbot-fulfillment1 \
         --action "lambda:InvokeFunction" \
         --principal "lex.amazonaws.com" \
         >/dev/null
