@@ -3,8 +3,9 @@
         "description": "merchant customer id in the data",
         "valueSelectionStrategy": "ORIGINAL_VALUE",
         "enumerationValues": [
-                {"value": "merchant"},
-                {"value":  "merchant id"}
+                {"value": "9220000000000000000"},
+                {"value": "611000000000"},
+                {"value": "621000020000"}
         ]
 }
 
