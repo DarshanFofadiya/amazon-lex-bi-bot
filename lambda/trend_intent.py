@@ -68,9 +68,10 @@ def trend_intent_handler(intent_request, session_attributes):
     logger.debug('<<BIBot>> "trend_intent_handler(): slot_values: %s', slot_values)
 
     #check if merchant slot is present then delete am slot
-
+    delete_am_slot = False
     if slot_values.get('merchant') is not None:
         delete_am_slot = True
+
     # Retrieve "remembered" slot values from session attributes
     slot_values = helpers.get_remembered_slot_values(slot_values, session_attributes)
     logger.debug('<<BIBot>> "count_intent_handler(): slot_values afer get_remembered_slot_values: %s', slot_values)
