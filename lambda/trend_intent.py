@@ -71,12 +71,16 @@ def trend_intent_handler(intent_request, session_attributes):
     slot_values = helpers.get_remembered_slot_values(slot_values, session_attributes)
     logger.debug('<<BIBot>> "count_intent_handler(): slot_values afer get_remembered_slot_values: %s', slot_values)
 
-    # Remember updated slot values
-    helpers.remember_slot_values(slot_values, session_attributes)
-
     if slot_values.get('merchant') is None and slot_values.get('am') is None:
         return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText', 'content':
             str("Please say something like: Show me trend for am Huuchid or \n Show me trend for merchant 513008907002")})
+
+    #if am slot is provided forget the merchant slot
+    if slot_values.get('am') is not None:
+        slot_values['merchant'] = None
+
+    # Remember updated slot values
+    helpers.remember_slot_values(slot_values, session_attributes)
 
     # Build and execute query
     select_clause = TREND_SELECT
@@ -107,6 +111,7 @@ def trend_intent_handler(intent_request, session_attributes):
         str_op = "GMS Current Week: {}, GMS Current Week-1: {}, GMS Current Week-2: {}, GMS Current Week-3: {}"
         row_data = response['ResultSet']['Rows'][1]['Data']
         str_op = str_op.format(row_data[0]['VarCharValue'], row_data[1]['VarCharValue'], row_data[2]['VarCharValue'], row_data[3]['VarCharValue'])
+        response_string += '\n'
         response_string += str_op
 
     logger.debug('<<BIBot>> response_string = ' + response_string) 
