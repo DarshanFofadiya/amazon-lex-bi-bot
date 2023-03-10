@@ -14,7 +14,7 @@
                 "maxAttempts": 2, 
                 "messages": [
                     {
-                        "content": "what is the am id",
+                        "content": "what is the am name",
                         "contentType": "PlainText"
                     }
                 ]

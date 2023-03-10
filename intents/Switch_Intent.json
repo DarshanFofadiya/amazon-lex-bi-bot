@@ -2,6 +2,8 @@
     "name": "Switch_Intent",
     "description": "Get the output for the previous intent for a different slot",
     "sampleUtterances": [
+      "how about {merchant}",
+      "what is it for {merchant}",
       "how about {am}",
       "what is it for {am}",
       "and for {am}"
@@ -10,17 +12,34 @@
         {
             "slotType": "am",
             "name": "am",
-            "slotConstraint": "Required",
+            "slotConstraint": "Optional",
             "valueElicitationPrompt": {
                 "maxAttempts": 2,
                 "messages": [
                     {
-                        "content": "am id",
+                        "content": "what is am name",
                         "contentType": "PlainText"
                     }
                 ]
             },
             "priority": 1,
+            "slotTypeVersion": "$LATEST",
+            "sampleUtterances": []
+        },
+        {
+            "slotType": "merchant",
+            "name": "merchant",
+            "slotConstraint": "Optional",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    {
+                        "content": "what is the merchant id",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 2,
             "slotTypeVersion": "$LATEST",
             "sampleUtterances": []
         }
