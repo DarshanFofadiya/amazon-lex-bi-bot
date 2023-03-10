@@ -22,12 +22,12 @@ import bibot_config as bibot
 import bibot_helpers as helpers
 import bibot_userexits as userexits
 
+
 # SELECT statement for Top query
-TOP_SELECT = "SELECT channel, SUM(net_ordered_gms_wk9) as net_ordered_gms FROM scenario1"
-#TOP_JOIN    = " WHERE e.event_id = s.event_id AND v.venue_id = e.venue_id AND c.cat_id = e.cat_id AND d.date_id = e.date_id "
-TOP_WHERE = " WHERE am = {}"
+TOP_SELECT = "select channel, '$' || regexp_replace(cast(sum(net_ordered_gms_wk8) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as net_ordered_gms from scenario1"
+TOP_WHERE = " WHERE stage = 'Closed Won' and am = {}"
 TOP_ORDERBY = " GROUP BY channel ORDER BY net_ordered_gms desc"
-#TOP_DEFAULT_COUNT = '5'
+
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -102,7 +102,7 @@ def channelsummary_intent_handler(intent_request, session_attributes):
     response = helpers.execute_athena_query(query_string)
     #logger.debug('Response from Athena is ', json.dumps(response))
     # Build response text for Lex
-    response_string = 'The summary is as below \n'
+    response_string = 'The channelwise summary for {} is \n'.format(slot_values.get('am'))
 
     #formatting the output string
     str_op = ""
