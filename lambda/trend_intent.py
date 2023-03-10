@@ -25,8 +25,8 @@ import bibot_userexits as userexits
 
 # SELECT statement for Trend query
 TREND_SELECT = "SELECT sum(net_ordered_gms_wk9) as gms_curr_week, sum(net_ordered_gms_wk8) as gms_curr_weekminus1, sum(net_ordered_gms_wk7) as gms_curr_weekminus2, sum(net_ordered_gms_wk6) as gms_curr_weekminus3 from scenario1"
-#TREND_WHERE = " where am = {} and  merchant_customer_id = {}"
-TREND_WHERE = " where am = {}"
+TREND_WHERE = " where am = {} and  merchant_customer_id = {}"
+#TREND_WHERE = " where am = {}"
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -73,20 +73,18 @@ def trend_intent_handler(intent_request, session_attributes):
     # Remember updated slot values
     helpers.remember_slot_values(slot_values, session_attributes)
 
+    if slot_values.get('merchant') is None:
+        return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText', 'content': str("please provide merchant id")})
     # Build and execute query
     select_clause = TREND_SELECT
-    #where_clause = TREND_WHERE.format(("'" + slot_values.get('am') + "'"), ("'" + slot_values.get('merchant') + "'"))
-    where_clause = TREND_WHERE.format(("'" + slot_values.get('am') + "'"))
+    where_clause = TREND_WHERE.format(("'" + slot_values.get('am') + "'"), ("'" + slot_values.get('merchant') + "'"))
+    #where_clause = TREND_WHERE.format(("'" + slot_values.get('am') + "'"))
 
     query_string = select_clause + where_clause
     
     logger.debug('<<BIBot>> Athena Query String = ' + query_string)  
     
     response = helpers.execute_athena_query(query_string)
-
-    # Build response string
-    response_string = ''
-    result_count = len(response['ResultSet']['Rows']) - 1
 
     # Build response text for Lex
     #response_string = 'The last 4 week trend for merchant_id {} is \n'.format(slot_values.get('merchant'))
