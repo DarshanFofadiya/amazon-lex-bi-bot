@@ -47,7 +47,7 @@ def reset_intent_handler(intent_request, session_attributes):
 
     slot_values = dict()
     for key, config in bibot.SLOT_CONFIG.items():
-        logger.debug('<<BIBot>> reset_intent_handler() - forgetting slot %s value %s', key, slot_values[key])
+        #logger.debug('<<BIBot>> reset_intent_handler() - forgetting slot %s value %s', key, slot_values[key])
         slot_values[key] = None
 
     helpers.remember_slot_values(slot_values, session_attributes)
