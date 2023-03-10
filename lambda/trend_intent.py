@@ -45,7 +45,7 @@ select channel, sum(net_ordered_gms_wk8) as net_ordered_gms_wk8, sum(net_ordered
 '$' || regexp_replace(cast(sum(net_ordered_gms_wk5) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_weekminus3 \
 from scenario1"
 
-TREND_WHERE_AM = " where am = {}"
+TREND_WHERE_AM = " where stage = 'Closed Won' and am = {}"
 TREND_WHERE_MERCHANT = " where stage = 'Closed Won' and merchant_customer_id = {}"
 
 TREND_GROUP_BY = " group by channel "
