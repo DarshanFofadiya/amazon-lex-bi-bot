@@ -46,7 +46,7 @@ select channel, sum(net_ordered_gms_wk8) as net_ordered_gms_wk8, sum(net_ordered
 from scenario1"
 
 TREND_WHERE_AM = " where am = {}"
-TREND_WHERE_MERCHANT = " where merchant_customer_id = {}"
+TREND_WHERE_MERCHANT = " where stage = 'Closed Won' and merchant_customer_id = {}"
 
 TREND_GROUP_BY = " group by channel "
 
