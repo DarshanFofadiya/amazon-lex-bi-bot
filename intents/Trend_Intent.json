@@ -22,25 +22,7 @@
             "priority": 1,
             "slotTypeVersion": "$LATEST",
             "sampleUtterances": []
-        },
-        {
-            "slotType": "merchant",
-            "name": "merchant",
-            "slotConstraint": "Required",
-            "valueElicitationPrompt": {
-                "maxAttempts": 2,
-                "messages": [
-                    {
-                        "content": "what is the merchant_id",
-                        "contentType": "PlainText"
-                    }
-                ]
-            },
-            "priority": 2,
-            "slotTypeVersion": "$LATEST",
-            "sampleUtterances": []
         }
-
     ],
     "conclusionStatement": {
       "messages": [
