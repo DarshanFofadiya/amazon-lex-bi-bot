@@ -155,12 +155,14 @@ def trend_intent_handler(intent_request, session_attributes):
     result_count_channel = len(response_channel['ResultSet']['Rows']) - 1
     if result_count_channel > 0:
         str_op_channel = "\n{} GMS Current Week: {} \n,{} GMS Current Week-1: {} \n ,{} GMS Current Week-2: {} \n ,{} GMS Current Week-3: {} \n,{} GMS Current Week Over Week: {}"
-        row_data = response_channel['ResultSet']['Rows'][1]['Data']
-        str_op_channel = str_op_channel.format(row_data[0]['VarCharValue'], row_data[1]['VarCharValue'], row_data[0]['VarCharValue'], row_data[2]['VarCharValue'],
+        for index in range(len(result_count_channel)):
+            if index > 0:
+                row_data = response_channel['ResultSet']['Rows'][index]['Data']
+                str_op_channel = str_op_channel.format(row_data[0]['VarCharValue'], row_data[1]['VarCharValue'], row_data[0]['VarCharValue'], row_data[2]['VarCharValue'],
                                row_data[0]['VarCharValue'], row_data[3]['VarCharValue'], row_data[0]['VarCharValue'] ,row_data[4]['VarCharValue'],
                                row_data[0]['VarCharValue'], row_data[5]['VarCharValue'])
-        response_string += '\n'
-        response_string += str_op_channel
+                response_string += '\n'
+                response_string += str_op_channel
 
     logger.debug('<<BIBot>> response_string = ' + response_string)
 
