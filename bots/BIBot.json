@@ -11,6 +11,10 @@
             "intentName": "Top_Intent"
         },
         {
+            "intentVersion": "$LATEST",
+            "intentName": "Bottom_Intent"
+        },
+        {
             "intentVersion": "$LATEST", 
             "intentName": "Hello_Intent"
         }, 

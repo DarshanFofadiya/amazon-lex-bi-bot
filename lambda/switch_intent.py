@@ -23,7 +23,7 @@ import bibot_userexits as userexits
 import channelsummary_intent
 import top_intent
 import trend_intent
-
+import bottom_intent
 
 #
 # See additional configuration parameters at bottom 
@@ -70,6 +70,7 @@ def switch_intent_handler(intent_request, session_attributes):
 INTENT_CONFIG = {
     'Channelsummary_Intent': {'handler': channelsummary_intent.channelsummary_intent_handler},
     'Top_Intent': {'handler': top_intent.top_intent_handler},
+    'Bottom_Intent': {'handler': bottom_intent.bottom_intent_handler},
     'Trend_Intent': {'handler': trend_intent.trend_intent_handler}
 }
 

@@ -76,15 +76,13 @@ def trend_intent_handler(intent_request, session_attributes):
     slot_values = helpers.get_remembered_slot_values(slot_values, session_attributes)
     logger.debug('<<BIBot>> "count_intent_handler(): slot_values afer get_remembered_slot_values: %s', slot_values)
 
-    if delete_am_slot:
-        slot_values['am'] = None
 
     if slot_values.get('merchant') is None and slot_values.get('am') is None:
         return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText', 'content':
             str("Please say something like: Show me trend for am Huuchid or \n Show me trend for merchant 513008907002")})
 
     #if am slot is provided forget the merchant slot
-    if slot_values.get('am') is not None:
+    if slot_values.get('am') is not None and not delete_am_slot:
         slot_values['merchant'] = None
 
     # Remember updated slot values

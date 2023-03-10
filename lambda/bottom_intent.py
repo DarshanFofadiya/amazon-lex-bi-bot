@@ -1,12 +1,12 @@
 #
 # Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
 # without restriction, including without limitation the rights to use, copy, modify,
 # merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
 # INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
 # PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
@@ -23,10 +23,10 @@ import bibot_helpers as helpers
 import bibot_userexits as userexits
 
 # SELECT statement for Top query
-TOP_SELECT  = "SELECT merchant_customer_id, SUM(net_ordered_gms_wk9) as net_ordered_gms FROM scenario1"
-#TOP_JOIN    = " WHERE e.event_id = s.event_id AND v.venue_id = e.venue_id AND c.cat_id = e.cat_id AND d.date_id = e.date_id "
-TOP_WHERE   = " WHERE am = {}"
-TOP_ORDERBY = " GROUP BY merchant_customer_id ORDER BY net_ordered_gms desc "
+TOP_SELECT = "SELECT merchant_customer_id, SUM(net_ordered_gms_wk9) as net_ordered_gms FROM scenario1"
+# TOP_JOIN    = " WHERE e.event_id = s.event_id AND v.venue_id = e.venue_id AND c.cat_id = e.cat_id AND d.date_id = e.date_id "
+TOP_WHERE = " WHERE am = {}"
+BOTTOM_ORDERBY = " GROUP BY am ORDER BY ticket_sales asc "
 TOP_DEFAULT_COUNT = '5'
 
 logger = logging.getLogger()
@@ -42,16 +42,16 @@ def lambda_handler(event, context):
     config_error = helpers.get_bibot_config()
     if config_error is not None:
         return helpers.close(session_attributes, 'Fulfilled',
-            {'contentType': 'PlainText', 'content': config_error})   
+                             {'contentType': 'PlainText', 'content': config_error})
     else:
         return top_intent_handler(event, session_attributes)
 
 
-def top_intent_handler(intent_request, session_attributes):
+def bottom_intent_handler(intent_request, session_attributes):
     method_start = time.perf_counter()
 
     logger.debug('<<BIBot>> top_intent_handler: session_attributes = ' + json.dumps(session_attributes))
-    
+
     session_attributes['greetingCount'] = '1'
     session_attributes['resetCount'] = '0'
     session_attributes['finishedCount'] = '0'
@@ -63,7 +63,7 @@ def top_intent_handler(intent_request, session_attributes):
     try:
         slot_values = helpers.get_slot_values(slot_values, intent_request)
     except bibot.SlotError as err:
-        return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText','content': str(err)})
+        return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText', 'content': str(err)})
 
     logger.debug('<<BIBot>> "top_intent_handler(): slot_values: %s', slot_values)
 
@@ -72,7 +72,8 @@ def top_intent_handler(intent_request, session_attributes):
     logger.debug('<<BIBot>> "top_intent_handler(): slot_values afer get_remembered_slot_values: %s', slot_values)
 
     if slot_values.get('am') is None:
-        return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText', 'content': str("please provide am id")})
+        return helpers.close(session_attributes, 'Fulfilled',
+                             {'contentType': 'PlainText', 'content': str("please provide am id")})
 
     if slot_values.get('count') is None:
         slot_values['count'] = TOP_DEFAULT_COUNT
@@ -81,21 +82,20 @@ def top_intent_handler(intent_request, session_attributes):
     logger.debug('<<BIBot>> "top_intent_handler(): calling remember_slot_values_NEW: %s', slot_values)
     helpers.remember_slot_values(slot_values, session_attributes)
 
-
     select_clause = TOP_SELECT
-    top_orderby_clause = TOP_ORDERBY
-    # add JOIN clauses 
+    bottom_orderby_clause = BOTTOM_ORDERBY
+    # add JOIN clauses
     where_clause = TOP_WHERE.format("'" + slot_values.get('am') + "'")
     limit_clause = " LIMIT {}".format(slot_values.get('count'))
 
-    query_string = select_clause + where_clause + top_orderby_clause + limit_clause
-    logger.debug('<<BIBot>> Athena Query String = ' + query_string)            
+    query_string = select_clause + where_clause + bottom_orderby_clause + limit_clause
+    logger.debug('<<BIBot>> Athena Query String = ' + query_string)
 
     # execute Athena query
     response = helpers.execute_athena_query(query_string)
 
     # Build response text for Lex
-    response_string = 'The top {} merchants are \n'.format(slot_values.get('count'))
+    response_string = 'The bottom {} merchants are \n'.format(slot_values.get('count'))
     result_count = len(response['ResultSet']['Rows']) - 1
 
     if result_count > 0:
@@ -111,7 +111,6 @@ def top_intent_handler(intent_request, session_attributes):
                     str_op = str_op + ", "
         response_string += str_op
 
-
     logger.debug('<<BIBot>> response_string = ' + response_string)
     if len(merchant_store) > 0:
         session_attributes['merchant_store'] = json.dumps(merchant_store)
@@ -119,9 +118,10 @@ def top_intent_handler(intent_request, session_attributes):
 
     method_duration = time.perf_counter() - method_start
     method_duration_string = 'method time = %.0f' % (method_duration * 1000) + ' ms'
-    logger.debug('<<BIBot>> "Method duration is: ' + method_duration_string) 
-    
-    logger.debug('<<BIBot>> top_intent_handler() - sessions_attributes = %s, response = %s', session_attributes, {'contentType': 'PlainText','content': response_string})
+    logger.debug('<<BIBot>> "Method duration is: ' + method_duration_string)
 
-    return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText','content': response_string})   
+    logger.debug('<<BIBot>> bottom_intent_handler() - sessions_attributes = %s, response = %s', session_attributes,
+                 {'contentType': 'PlainText', 'content': response_string})
+
+    return helpers.close(session_attributes, 'Fulfilled', {'contentType': 'PlainText', 'content': response_string})
 

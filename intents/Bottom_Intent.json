@@ -2,12 +2,11 @@
     "name": "Top_Intent", 
     "description": "Top n merchants",
     "sampleUtterances": [
-        "show me top {count} merchants for {am}",
-        "show me my top {count} merchants",
-        "who are my top {count} merchants",
-        "who are my top {count} merchants",
-        "who are my top {count} performing merchants",
-        "show me my top {count} sellers"
+        "show me bottom {count} merchants for {am}",
+        "show me my bottom {count} merchants",
+        "who are my bottom {count} merchants",
+        "who are my worst {count} performing merchants",
+        "show me my worst {count} sellers"
     ], 
     "slots": [
         {
