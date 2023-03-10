@@ -3,10 +3,10 @@
         "description": "am id in the data",
         "valueSelectionStrategy": "ORIGINAL_VALUE", 
         "enumerationValues": [
-                {"value": "dazusa"},
-                {"value":  "huuchid"},
-                {"value":  "kattahar"},
-                {"value":  "yamshta"},
+                {"value": "John"},
+                {"value":  "Alice"},
+                {"value":  "Jim"},
+                {"value":  "Pam"},
                 {"value":  "am"},
                 {"value":  "account manager"}
         ]

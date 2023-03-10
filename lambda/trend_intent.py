@@ -22,11 +22,34 @@ import bibot_config as bibot
 import bibot_helpers as helpers
 import bibot_userexits as userexits
 
+TREND_SELECT = "select gms_curr_week, gms_curr_weekminus1, gms_curr_weekminus2, gms_curr_weekminus3, \
+cast(cast(100*(cast(net_ordered_gms_wk8 as double)/net_ordered_gms_wk7 -1) as int) as varchar) || '%' as week_over_week \
+from \
+( \
+select sum(net_ordered_gms_wk8) as net_ordered_gms_wk8, sum(net_ordered_gms_wk7) as net_ordered_gms_wk7, \
+'$' || regexp_replace(cast(sum(net_ordered_gms_wk8) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_week, \
+'$' || regexp_replace(cast(sum(net_ordered_gms_wk7) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_weekminus1, \
+'$' || regexp_replace(cast(sum(net_ordered_gms_wk6) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_weekminus2, \
+'$' || regexp_replace(cast(sum(net_ordered_gms_wk5) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_weekminus3 \
+from scenario1"
 
-# SELECT statement for Trend query
-TREND_SELECT = "SELECT sum(net_ordered_gms_wk9) as gms_curr_week, sum(net_ordered_gms_wk8) as gms_curr_weekminus1, sum(net_ordered_gms_wk7) as gms_curr_weekminus2, sum(net_ordered_gms_wk6) as gms_curr_weekminus3 from scenario1"
+
+TREND_SELECT_CHANNEL = "select channel, gms_curr_week, gms_curr_weekminus1, gms_curr_weekminus2, gms_curr_weekminus3, \
+cast(cast(100*(cast(net_ordered_gms_wk8 as double)/net_ordered_gms_wk7 -1) as int) as varchar) || '%' as week_over_week \
+from \
+( \
+select sum(net_ordered_gms_wk8) as net_ordered_gms_wk8, sum(net_ordered_gms_wk7) as net_ordered_gms_wk7, \
+'$' || regexp_replace(cast(sum(net_ordered_gms_wk8) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_week, \
+'$' || regexp_replace(cast(sum(net_ordered_gms_wk7) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_weekminus1, \
+'$' || regexp_replace(cast(sum(net_ordered_gms_wk6) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_weekminus2, \
+'$' || regexp_replace(cast(sum(net_ordered_gms_wk5) as VARCHAR), '(\d)(?=(\d\d\d)+(?!\d))', '$1,') as gms_curr_weekminus3 \
+from scenario1"
+
 TREND_WHERE_AM = " where am = {}"
 TREND_WHERE_MERCHANT = " where merchant_customer_id = {}"
+
+TREND_GROUP_BY = " group by channel "
+
 
 
 logger = logging.getLogger()
@@ -97,11 +120,17 @@ def trend_intent_handler(intent_request, session_attributes):
         where_clause = TREND_WHERE_AM.format(("'" + slot_values.get('am') + "'"))
 
     query_string = select_clause + where_clause
-    
-    logger.debug('<<BIBot>> Athena Query String = ' + query_string)  
+    query_string_overall = query_string + ")"
+    query_string_channel = query_string + TREND_GROUP_BY + ")"
+    logger.debug('<<BIBot>> Athena Query String overall = ' + query_string_overall)
 
     try:
-        response = helpers.execute_athena_query(query_string)
+        response = helpers.execute_athena_query(query_string_overall)
+    except:
+        response = "Error"
+
+    try:
+        response_channel = helpers.execute_athena_query(query_string_channel)
     except:
         response = "Error"
 
@@ -114,13 +143,23 @@ def trend_intent_handler(intent_request, session_attributes):
     result_count = len(response['ResultSet']['Rows']) - 1
 
     if result_count > 0:
-        str_op = "\n GMS Current Week: {} \n, GMS Current Week-1: {} \n , GMS Current Week-2: {} \n , GMS Current Week-3: {} \n"
+        str_op = "\n GMS Current Week: {} \n, GMS Current Week-1: {} \n , GMS Current Week-2: {} \n , GMS Current Week-3: {} \n, GMS Current Week Over Week: {}"
         row_data = response['ResultSet']['Rows'][1]['Data']
-        str_op = str_op.format(row_data[0]['VarCharValue'], row_data[1]['VarCharValue'], row_data[2]['VarCharValue'], row_data[3]['VarCharValue'])
+        str_op = str_op.format(row_data[0]['VarCharValue'], row_data[1]['VarCharValue'], row_data[2]['VarCharValue'], row_data[3]['VarCharValue'], row_data[4]['VarCharValue'])
         response_string += '\n'
         response_string += str_op
 
-    logger.debug('<<BIBot>> response_string = ' + response_string) 
+    result_count_channel = len(response_channel['ResultSet']['Rows']) - 1
+    if result_count_channel > 0:
+        str_op_channel = "\n{} GMS Current Week: {} \n,{} GMS Current Week-1: {} \n ,{} GMS Current Week-2: {} \n ,{} GMS Current Week-3: {} \n,{} GMS Current Week Over Week: {}"
+        row_data = response['ResultSet']['Rows'][1]['Data']
+        str_op_channel = str_op_channel.format(row_data[0]['VarCharValue'], row_data[1]['VarCharValue'], row_data[0]['VarCharValue'], row_data[2]['VarCharValue'],
+                               row_data[0]['VarCharValue'], row_data[3]['VarCharValue'], row_data[0]['VarCharValue'] ,row_data[4]['VarCharValue'],
+                               row_data[0]['VarCharValue'], row_data[5]['VarCharValue'])
+        response_string += '\n'
+        response_string += str_op_channel
+
+    logger.debug('<<BIBot>> response_string = ' + response_string)
 
     method_duration = time.perf_counter() - method_start
     method_duration_string = 'method time = %.0f' % (method_duration * 1000) + ' ms'
