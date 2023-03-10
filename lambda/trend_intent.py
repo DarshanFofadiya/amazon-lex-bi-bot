@@ -152,7 +152,7 @@ def trend_intent_handler(intent_request, session_attributes):
         response_string += '\n'
         response_string += str_op
 
-    result_count_channel = len(response_channel['ResultSet']['Rows']) - 1
+    result_count_channel = len(response_channel['ResultSet']['Rows'])
     if result_count_channel > 0:
         str_op_channel = "\n{} GMS Current Week: {} \n,{} GMS Current Week-1: {} \n ,{} GMS Current Week-2: {} \n ,{} GMS Current Week-3: {} \n,{} GMS Current Week Over Week: {}"
         for index in range(result_count_channel):
