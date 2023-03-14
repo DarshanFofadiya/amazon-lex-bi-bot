@@ -21,6 +21,7 @@ TOP_RESOLUTION = 1
 SLOT_CONFIG = {
     'merchant': {'type': ORIGINAL_VALUE, 'remember': True, 'error': 'I could not find merchant_id "{}".'},
     'am': {'type': ORIGINAL_VALUE, 'remember': True, 'error': 'I could not find an am called "{}".'},
+    'asin': {'type': ORIGINAL_VALUE, 'remember': True, 'error': 'I could not find asin called "{}" in the data.'},
     'count': {'type': ORIGINAL_VALUE, 'remember': True}
 }
 

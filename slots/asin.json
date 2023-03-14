@@ -1,0 +1,11 @@
+{
+        "name": "asin",
+        "description": "asin id in the data",
+        "valueSelectionStrategy": "ORIGINAL_VALUE",
+        "enumerationValues": [
+                {"value": "B00KTGEIXU"},
+                {"value":  "B00SDD1KCI"},
+                {"value":  "B00JOQQQX6"}
+        ]
+}
+

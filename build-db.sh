@@ -32,6 +32,13 @@ aws athena start-query-execution \
     --result-configuration "OutputLocation=$ATHENA_BUCKET/output/" \
     >/dev/null
 
+aws athena start-query-execution \
+    --query-string "create external table eric_demo (merchant_customer_id string, marketplace_id int, channel string, gl string, gl_id int, asin string, net_ordered_gms_wk7 bigint, net_ordered_gms_wk8 bigint, net_ordered_gms_wk9 bigint, net_ordered_gms_wk10 bigint, net_ordered_units_wk7 bigint, net_ordered_units_wk8 bigint, net_ordered_units_wk9 bigint, net_ordered_units_wk10 bigint, net_shipped_gms_wk7 bigint, net_shipped_gms_wk8 bigint, net_shipped_gms_wk9 bigint, net_shipped_gms_wk10 bigint, net_shipped_units_wk7 bigint, net_shipped_units_wk8 bigint, net_shipped_units_wk9 bigint, net_shipped_units_wk10 bigint) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' LOCATION '$ATHENA_BUCKET/eric_demo';" \
+    --query-execution-context "Database=$ATHENA_DB" \
+    --result-configuration "OutputLocation=$ATHENA_BUCKET/output/" \
+    >/dev/null
+
+
 
 
 

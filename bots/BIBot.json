@@ -4,6 +4,10 @@
     "intents": [
         {
             "intentVersion": "$LATEST",
+            "intentName": "Asintrend_Intent"
+        },
+        {
+            "intentVersion": "$LATEST",
             "intentName": "Trend_Intent"
         },
         {
