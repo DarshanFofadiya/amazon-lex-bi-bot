@@ -1,5 +1,5 @@
 {
-        "name": "time",
+        "name": "time1",
         "description": "time granularity",
         "valueSelectionStrategy": "ORIGINAL_VALUE", 
         "enumerationValues": [

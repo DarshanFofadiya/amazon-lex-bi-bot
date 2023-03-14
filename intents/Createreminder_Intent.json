@@ -2,8 +2,8 @@
     "name": "Createreminder_Intent",
     "description": "Create Reminder to follow up",
     "sampleUtterances": [
-        "Create a reminder to follow up with {merchant} next {time}",
-        "set a reminder to follow up next {time}",
+        "Create a reminder to follow up with {merchant} next {time1}",
+        "set a reminder to follow up next {time1}",
         "set a reminder"
     ],
     "slots": [
@@ -25,8 +25,8 @@
             "sampleUtterances": []
       },
       {
-        "slotType": "time",
-        "name": "time",
+        "slotType": "time1",
+        "name": "time1",
         "slotConstraint": "Optional",
         "valueElicitationPrompt": {
           "maxAttempts": 2,
