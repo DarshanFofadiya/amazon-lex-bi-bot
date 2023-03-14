@@ -1,0 +1,26 @@
+{
+    "name": "Snlinfo_Intent",
+    "description": "Get information on SnL",
+    "sampleUtterances": [
+        "tell me more about snl",
+        "what is snl",
+        "what are the fees for snl",
+        "what is the eligibility criteria for snl"
+    ],
+    "slots": [],
+    "conclusionStatement": {
+      "messages": [
+        {
+          "content": "via code hook",
+          "contentType": "PlainText"
+        }
+      ]
+    },
+    "fulfillmentActivity": {
+        "type": "CodeHook",
+        "codeHook": {
+            "uri": "{{lambda-arn}}",
+            "messageVersion": "1.0"
+        }
+    }
+}

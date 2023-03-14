@@ -4,6 +4,14 @@
     "intents": [
         {
             "intentVersion": "$LATEST",
+            "intentName": "Createreminder_Intent"
+        },
+        {
+            "intentVersion": "$LATEST",
+            "intentName": "Snlinfo_Intent"
+        },
+        {
+            "intentVersion": "$LATEST",
             "intentName": "Topasin_Intent"
         },
         {

@@ -1,0 +1,12 @@
+{
+        "name": "time",
+        "description": "time granularity",
+        "valueSelectionStrategy": "ORIGINAL_VALUE", 
+        "enumerationValues": [
+                {"value": "week"},
+                {"value":  "month"},
+                {"value":  "year"},
+                {"value":  "quarter"}
+        ]
+}
+
