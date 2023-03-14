@@ -10,7 +10,7 @@
         {
             "slotType": "merchant",
             "name": "merchant",
-            "slotConstraint": "Required",
+            "slotConstraint": "Optional",
             "valueElicitationPrompt": {
                 "maxAttempts": 2,
                 "messages": [

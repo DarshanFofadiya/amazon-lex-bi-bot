@@ -74,6 +74,10 @@ def topasin_intent_handler(intent_request, session_attributes):
     if slot_values.get('count') is None:
         slot_values['count'] = TOP_DEFAULT_COUNT
 
+    if slot_values.get('merchant') is None:
+        return helpers.close(session_attributes, 'Fulfilled',
+                             {'contentType': 'PlainText', 'content': str("please provide merchant id")})
+
     # store updated slot values
     logger.debug('<<BIBot>> "top_intent_handler(): calling remember_slot_values_NEW: %s', slot_values)
     helpers.remember_slot_values(slot_values, session_attributes)
