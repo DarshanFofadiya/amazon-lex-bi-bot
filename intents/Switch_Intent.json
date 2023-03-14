@@ -6,7 +6,9 @@
       "what is it for {merchant}",
       "how about {am}",
       "what is it for {am}",
-      "and for {am}"
+      "and for {am}",
+      "and for {asin}",
+      "how about {asin}"
     ],
     "slots": [
         {
