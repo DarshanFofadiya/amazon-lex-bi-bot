@@ -1,0 +1,60 @@
+{
+    "name": "Topasin_Intent",
+    "description": "Top n asins",
+    "sampleUtterances": [
+        "show me top {count} asins for {merchant}",
+        "show me my top {count} asins",
+        "which are my top {count} asins"
+    ], 
+    "slots": [
+        {
+            "slotType": "merchant",
+            "name": "merchant",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    {
+                        "content": "what is the merchant id",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 1,
+            "slotTypeVersion": "$LATEST",
+            "sampleUtterances": []
+        },
+        {
+            "slotType": "AMAZON.NUMBER", 
+            "name": "count", 
+            "slotConstraint": "Optional", 
+            "valueElicitationPrompt": {
+                "maxAttempts": 2, 
+                "messages": [
+                    {
+                        "content": "number", 
+                        "contentType": "PlainText"
+                    }
+                ]
+            }, 
+            "priority": 2,
+            "sampleUtterances": []
+        }
+
+    ], 
+    "conclusionStatement": {
+      "messages": [
+        {
+          "content": "via code hook",
+          "contentType": "PlainText"
+        }
+      ]
+    },
+    "fulfillmentActivity": {
+        "type": "CodeHook", 
+        "codeHook": {
+            "uri": "{{lambda-arn}}", 
+            "messageVersion": "1.0"
+        }
+    }
+}

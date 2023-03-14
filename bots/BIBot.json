@@ -4,6 +4,10 @@
     "intents": [
         {
             "intentVersion": "$LATEST",
+            "intentName": "Topasin_Intent"
+        },
+        {
+            "intentVersion": "$LATEST",
             "intentName": "Asintrend_Intent"
         },
         {

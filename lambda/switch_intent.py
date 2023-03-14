@@ -26,6 +26,7 @@ import trend_intent
 import bottom_intent
 import identifydecline_intent
 import asintrend_intent
+import topasin_intent
 
 #
 # See additional configuration parameters at bottom 
@@ -75,6 +76,7 @@ INTENT_CONFIG = {
     'Bottom_Intent': {'handler': bottom_intent.bottom_intent_handler},
     'Trend_Intent': {'handler': trend_intent.trend_intent_handler},
     'Identifydecline_Intent': {'handler': identifydecline_intent.identifydecline_intent_handler},
-    'Asintrend_Intent': {'handler': asintrend_intent.asintrend_intent_handler}
+    'Asintrend_Intent': {'handler': asintrend_intent.asintrend_intent_handler},
+    'Topasin_Intent': {'handler': topasin_intent.topasin_intent_handler}
 }
 
