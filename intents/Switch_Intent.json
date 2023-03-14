@@ -44,6 +44,23 @@
             "priority": 2,
             "slotTypeVersion": "$LATEST",
             "sampleUtterances": []
+        },
+        {
+            "slotType": "asin",
+            "name": "asin",
+            "slotConstraint": "Optional",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    {
+                        "content": "what is the asin id",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 3,
+            "slotTypeVersion": "$LATEST",
+            "sampleUtterances": []
         }
     ],
     "fulfillmentActivity": {
