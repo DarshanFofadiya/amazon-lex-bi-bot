@@ -25,7 +25,7 @@ import bibot_userexits as userexits
 # SELECT statement for Top query
 TOP_SELECT  = "SELECT asin, SUM(net_ordered_gms_wk10) as net_ordered_gms FROM eric_demo"
 #TOP_JOIN    = " WHERE e.event_id = s.event_id AND v.venue_id = e.venue_id AND c.cat_id = e.cat_id AND d.date_id = e.date_id "
-TOP_WHERE   = " WHERE merchant = {} "
+TOP_WHERE   = " WHERE merchant_customer_id = {} "
 TOP_ORDERBY = " GROUP BY asin ORDER BY net_ordered_gms desc "
 TOP_DEFAULT_COUNT = '5'
 

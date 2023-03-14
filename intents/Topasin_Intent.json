@@ -4,7 +4,9 @@
     "sampleUtterances": [
         "show me top {count} asins for {merchant}",
         "show me my top {count} asins",
-        "which are my top {count} asins"
+        "which are my top {count} asins",
+        "top asins for merchant {merchant}",
+        "top asins for {merchant}"
     ], 
     "slots": [
         {
