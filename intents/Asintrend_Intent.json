@@ -11,7 +11,7 @@
         {
             "slotType": "asin",
             "name": "asin",
-            "slotConstraint": "Required",
+            "slotConstraint": "Optional",
             "valueElicitationPrompt": {
                 "maxAttempts": 2,
                 "messages": [

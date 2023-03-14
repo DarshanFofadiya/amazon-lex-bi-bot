@@ -2,8 +2,8 @@
     "name": "Createreminder_Intent",
     "description": "Create Reminder to follow up",
     "sampleUtterances": [
-        "Create a reminder to follow up with {merchant} next {time1}",
-        "set a reminder to follow up next {time1}",
+        "Create a reminder to follow up with {merchant} next {timeslot}",
+        "set a reminder to follow up next {timeslot}",
         "set a reminder"
     ],
     "slots": [
