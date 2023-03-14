@@ -1,5 +1,5 @@
 {
-        "name": "time1",
+        "name": "timeslot",
         "description": "time granularity",
         "valueSelectionStrategy": "ORIGINAL_VALUE", 
         "enumerationValues": [

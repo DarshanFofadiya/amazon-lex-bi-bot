@@ -69,8 +69,8 @@ def createreminder_intent_handler(intent_request, session_attributes):
         return helpers.close(session_attributes, 'Fulfilled',
                              {'contentType': 'PlainText', 'content': str("please provide merchant id")})
 
-    if slot_values.get('time') is None:
-        slot_values['time'] = 'week'
+    if slot_values.get('timeslot') is None:
+        slot_values['timeslot'] = 'week'
 
     # store updated slot values
     logger.debug('<<BIBot>> "top_intent_handler(): calling remember_slot_values_NEW: %s', slot_values)
@@ -78,7 +78,7 @@ def createreminder_intent_handler(intent_request, session_attributes):
 
 
     # Build response text for Lex
-    response_string = 'I have set a reminder to follow up with merchant {} next {} \n'.format(slot_values.get('merchant'), slot_values.get('time'))
+    response_string = 'I have set a reminder to follow up with merchant {} next {} \n'.format(slot_values.get('merchant'), slot_values.get('timeslot'))
     logger.debug('<<BIBot>> response_string = ' + response_string)
 
     logger.debug('<<BIBot>> lambda_handler: session_attributes = ' + json.dumps(session_attributes))

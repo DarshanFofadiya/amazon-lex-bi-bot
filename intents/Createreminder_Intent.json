@@ -25,8 +25,8 @@
             "sampleUtterances": []
       },
       {
-        "slotType": "time1",
-        "name": "time1",
+        "slotType": "timeslot",
+        "name": "timeslot",
         "slotConstraint": "Optional",
         "valueElicitationPrompt": {
           "maxAttempts": 2,
