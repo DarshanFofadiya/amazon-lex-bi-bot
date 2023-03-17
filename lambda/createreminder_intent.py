@@ -78,7 +78,7 @@ def createreminder_intent_handler(intent_request, session_attributes):
 
 
     # Build response text for Lex
-    response_string = 'I have set a reminder to follow up with merchant {} next {} \n'.format(slot_values.get('merchant'), slot_values.get('timeslot'))
+    response_string = 'I have created a new activity for you to follow up with merchant {} next {} regarding snl enrollment \n'.format(slot_values.get('merchant'), slot_values.get('timeslot'))
     logger.debug('<<BIBot>> response_string = ' + response_string)
 
     logger.debug('<<BIBot>> lambda_handler: session_attributes = ' + json.dumps(session_attributes))
